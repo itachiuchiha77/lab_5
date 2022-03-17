@@ -35,18 +35,13 @@ namespace lab_5.Views
 
                 this.FindControl<Button>("SaveFile").Click += async delegate
                 {
-                    var TaskGetPathToFile = new OpenFileDialog()
-                    {
-                        Title = "Save File",
-                        Filters = null
-                    }.ShowAsync((Window)this.VisualRoot);
-
-                    string[]? PathToFile = await TaskGetPathToFile;
-                    var Temp = this.DataContext as MainWindowViewModel;
+                    SaveFileDialog SaveFileWindowBox = new SaveFileDialog();
+                    SaveFileWindowBox.Title = "Save File";      
+                    var PathToFile = await SaveFileWindowBox.ShowAsync((Window)this.VisualRoot);
                     if (PathToFile != null)
                     {
-                        StreamWriter FWriter = new StreamWriter(string.Join(@"\", PathToFile), false);
-                        await FWriter.WriteLineAsync(Temp.Result);
+                        var Temp = this.DataContext as MainWindowViewModel;
+                        File.WriteAllText(PathToFile, Temp.Result);
                     }
                 };
                 
